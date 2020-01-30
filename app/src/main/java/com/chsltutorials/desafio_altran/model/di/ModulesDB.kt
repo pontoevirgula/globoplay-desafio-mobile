@@ -7,7 +7,7 @@ import com.chsltutorials.desafio_altran.model.db.MovieDatabase
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 
-val localModule = module {
+val dbModule = module {
 
     fun provideDatabase(application: Application): MovieDatabase {
         return Room.databaseBuilder(application, MovieDatabase::class.java, "movie.database")

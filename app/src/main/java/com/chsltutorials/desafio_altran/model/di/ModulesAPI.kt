@@ -19,7 +19,7 @@ val apiModule = module{
 val networkModule = module {
 
     fun providerRetrofit(client: OkHttpClient): Retrofit = Retrofit.Builder().apply {
-        baseUrl(BuildConfig.HOST)
+        baseUrl(BuildConfig.API)
         client(client)
         addConverterFactory(MoshiConverterFactory.create())
     }.build()
