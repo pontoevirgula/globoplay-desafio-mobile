@@ -7,7 +7,7 @@ import com.chsltutorials.desafio_altran.model.entity.Favorite
 import com.chsltutorials.desafio_altran.model.entity.Results
 
 interface MovieRepository{
-    fun getListMovies(): LiveData<List<Results>>
+    fun getListMovies(): List<Results>
     suspend fun getMovies()
     fun getListFavoriteMovies(): LiveData<List<Results>>
     fun addFavoriteMovies(id: Favorite)

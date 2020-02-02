@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.chsltutorials.desafio_altran.R
+import com.chsltutorials.desafio_altran.model.entity.Results
 import com.chsltutorials.desafio_altran.ui.details.DetailActivity
 import com.chsltutorials.desafio_altran.ui.home.HomeAdapter
 import com.chsltutorials.desafio_altran.ui.util.SpacingItemDecoration
@@ -34,19 +35,11 @@ class FavoriteFragment : Fragment() {
                 )
             )
             context?.let {
-                favorite_recycler_view.adapter =
-                    HomeAdapter(
-                        it,
-                        movies,
-                        object :
-                            HomeAdapter.OnItemClickListener {
-                            override fun onItemClick(position: Int) {
-                                val intent = Intent(activity, DetailActivity::class.java)
-                                intent.putExtra("MOVIE", movies[position])
-                                startActivity(intent)
-                            }
-                        }
-                    )
+                favorite_recycler_view.adapter = HomeAdapter(it, movies as MutableList<Results>){ results->
+                    val intent = DetailActivity.getStartIntent(it, results)
+                    startActivity(intent)
+                }
+
             }
         })
     }

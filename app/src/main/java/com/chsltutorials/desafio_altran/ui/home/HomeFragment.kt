@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import android.content.Intent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.chsltutorials.desafio_altran.R
+import com.chsltutorials.desafio_altran.model.entity.Results
 import com.chsltutorials.desafio_altran.ui.details.DetailActivity
 import com.chsltutorials.desafio_altran.ui.util.SpacingItemDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -29,19 +29,20 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.listMovies.observe(this, Observer { movies ->
-            rvHome.layoutManager = GridLayoutManager(activity, 3)
-            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid4)
-            rvHome.addItemDecoration(SpacingItemDecoration(spacingInPixels))
+        viewModel.moviesLiveData.observe(this, Observer { movies ->
+            if (!movies.isNullOrEmpty()) {
+                rvHome.layoutManager = GridLayoutManager(activity, 3)
+                val spacingInPixels = resources.getDimensionPixelSize(R.dimen.grid4)
+                rvHome.addItemDecoration(SpacingItemDecoration(spacingInPixels))
 
-            context?.let {
-                rvHome.adapter = HomeAdapter(it,movies,object : HomeAdapter.OnItemClickListener {
-                    override fun onItemClick(position: Int) {
-                        val intent = Intent(activity, DetailActivity::class.java)
-                        intent.putExtra("MOVIE", movies[position])
+                context?.let {
+                     val adapter = HomeAdapter(context!!, movies as MutableList<Results>) { movieClicked ->
+                        val intent = DetailActivity.getStartIntent(it, movieClicked)
                         startActivity(intent)
                     }
-                })
+                    //adapter.replaceAllMovies(movies as List<Results>)
+                    rvHome.adapter = adapter
+                }
             }
         })
     }

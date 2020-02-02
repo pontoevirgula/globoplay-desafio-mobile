@@ -11,27 +11,42 @@ import com.chsltutorials.desafio_altran.model.entity.Results
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.adapter_movie_item.view.*
 
-class HomeAdapter (private val context: Context, private val movies: List<Results>, private val onItemClickListener: OnItemClickListener) : RecyclerView.Adapter<HomeAdapter.MovieViewHolder>() {
+class HomeAdapter (private val context: Context,
+                   private val movies: MutableList<Results> = mutableListOf(),
+                   private val onItemClick: (resultList : Results) -> Unit) : RecyclerView.Adapter<HomeAdapter.MovieViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
-        return MovieViewHolder(LayoutInflater.from(context).inflate(R.layout.adapter_movie_item, parent, false))
+        val view =  LayoutInflater.from(context).inflate(R.layout.adapter_movie_item, parent, false)
+        return MovieViewHolder(view, onItemClick)
     }
 
+//    fun replaceAllMovies(movieList: List<Results>) {
+//        movies.clear()
+//        movies.addAll(movieList)
+//        notifyDataSetChanged()
+//    }
+
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        Picasso.with(context)
-            .load(BuildConfig.IMAGE+movies[position].poster_path)
-            .into(holder.itemView.ivMovieImage)
-        holder.itemView.setOnClickListener {
-            onItemClickListener.onItemClick(position)
-        }
+        holder.bind(movies[position])
     }
 
     override fun getItemCount() = movies.size
 
-    inner class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    inner class MovieViewHolder(itemView: View, private val onItemClick: (resultList : Results) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
-    interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun bind(results: Results) {
+            val image = BuildConfig.IMAGE+results.poster_path
+            val a = image
+            Picasso.with(context)
+                .load(image)
+                .into(itemView.ivMovieImage)
+
+            itemView.setOnClickListener {
+                onItemClick.invoke(results)
+            }
+        }
     }
+
+
 }

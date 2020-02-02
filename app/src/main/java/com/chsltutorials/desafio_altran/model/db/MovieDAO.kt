@@ -12,7 +12,7 @@ interface MovieDAO {
     fun addMovies(movies: List<Results>)
 
     @Query("SELECT * FROM movies")
-    fun findAllMovies(): LiveData<List<Results>>
+    fun findAllMovies(): List<Results>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSingleResult(result: Results)

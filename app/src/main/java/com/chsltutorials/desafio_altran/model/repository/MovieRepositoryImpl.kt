@@ -8,7 +8,7 @@ import com.chsltutorials.desafio_altran.model.entity.Results
 
 class MovieRepositoryImpl(private val api: MovieAPI, private val dao: MovieDAO) : MovieRepository{
 
-    override fun getListMovies() : LiveData<List<Results>> {
+    override fun getListMovies() : List<Results> {
         return dao.findAllMovies()
     }
     override fun addFavoriteMovies(id: Favorite) = dao.addFavoriteMovie(id)
@@ -16,7 +16,7 @@ class MovieRepositoryImpl(private val api: MovieAPI, private val dao: MovieDAO) 
     override fun getListFavoriteMovies() = dao.findAllFavoriteMovies()
     override fun verifyFavoriteMovie(id: String) = dao.verifyFavoriteMovie(id)
     override suspend fun getMovies() {
-        val movies = api.getMovies("803d892b8de1774a397eea8c048361b7","pt-BR","popularity.desc")
+        val movies = api.getAllMovies("803d892b8de1774a397eea8c048361b7","pt-BR","popularity.desc")
         movies.results?.let {
             dao.addMovies(it)
         }

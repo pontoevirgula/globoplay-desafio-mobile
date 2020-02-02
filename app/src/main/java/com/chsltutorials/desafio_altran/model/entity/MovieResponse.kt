@@ -4,5 +4,5 @@ data class MovieResponse(
     val page: Int ? = 0,
     val total_results: Int ? = 0,
     val total_pages: Int ? = 0,
-    val results : List<Results>? = null
+    val results : MutableList<Results>? = null
 )

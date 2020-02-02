@@ -1,5 +1,7 @@
 package com.chsltutorials.desafio_altran.ui.details
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -18,6 +20,16 @@ class DetailActivity: AppCompatActivity() {
     private val viewModel: DetailViewModel by viewModel()
     private var movie: Results? = null
 
+    companion object {
+        private const val EXTRA_RESULTS = "EXTRA_RESULTS"
+
+        fun getStartIntent(context: Context, results : Results): Intent {
+            return Intent(context, DetailActivity::class.java).apply {
+                putExtra(EXTRA_RESULTS, results)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
@@ -25,7 +37,11 @@ class DetailActivity: AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        movie = intent?.extras?.get("MOVIE") as Results
+        intent.let {
+            movie = it.getSerializableExtra(EXTRA_RESULTS) as Results
+        }
+
+
     }
 
     override fun onResume() {
