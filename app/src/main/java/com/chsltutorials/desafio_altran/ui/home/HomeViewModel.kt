@@ -31,8 +31,6 @@ class HomeViewModel(val repositoryImpl: MovieRepositoryImpl) : ViewModel() {
         viewModelScope.launch {
             try {
                 _requestStatus.postValue(RequestStatus.LOADING)
-                //repositoryImpl.getMovies()
-                val teste = repositoryImpl.getMovies()
 
                 if (!listMovies.isNullOrEmpty()) {
                     val movieList: MutableList<Results> = mutableListOf()
